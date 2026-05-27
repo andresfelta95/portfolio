@@ -1,12 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
+import SynthwaveBackdrop from "./SynthwaveBackdrop";
 import TechLayers from "./TechLayers";
 
 export default function Hero() {
   return (
-    <section className="min-h-screen flex flex-col justify-center pt-16 px-6">
-      <div className="max-w-6xl mx-auto w-full">
+    <section className="relative min-h-screen flex flex-col justify-center pt-16 px-6 overflow-hidden">
+      <SynthwaveBackdrop />
+      <div className="relative z-10 max-w-6xl mx-auto w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
           {/* Left — Text */}
@@ -31,11 +33,12 @@ export default function Hero() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-lg text-gray-400 mb-8 leading-relaxed"
+              className="text-lg text-gray-200 mb-8 leading-relaxed"
+              style={{ textShadow: "0 1px 12px rgba(0,0,0,0.6)" }}
             >
               Building from{" "}
-              <span className="text-[#f97316] font-medium">silicon</span> to{" "}
-              <span className="text-[#22c55e] font-medium">cloud</span>.{" "}
+              <span className="text-[#ff8a3c] font-medium">silicon</span> to{" "}
+              <span className="text-[#5fff9b] font-medium">cloud</span>.{" "}
               Embedded systems, mobile apps, web platforms, and self-hosted infrastructure.
             </motion.p>
             <motion.div
