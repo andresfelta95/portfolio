@@ -48,7 +48,7 @@ export default function ProjectsGrid() {
   return (
     <section id="projects" className="py-20 px-6">
       <div className="max-w-6xl mx-auto">
-        <p className="text-base font-pixel text-gray-600 tracking-[0.3em] uppercase mb-2">{"// "}PROJECTS</p>
+        <p className="text-base font-pixel text-gray-400 tracking-[0.3em] uppercase mb-2">{"// "}PROJECTS</p>
         <h2 className="text-3xl font-bold text-white mb-8">More Work</h2>
 
         {/* Filters */}
@@ -118,19 +118,19 @@ export default function ProjectsGrid() {
                 </div>
 
                 <h3 className="text-white font-semibold mb-2">{project.title}</h3>
-                <p className="text-gray-500 text-sm mb-4 flex-1 leading-relaxed">
+                <p className="text-gray-400 text-sm mb-4 flex-1 leading-relaxed">
                   {project.description}
                 </p>
 
               {/* Tech pills */}
               <div className="flex flex-wrap gap-1.5 mb-4">
                 {project.tech.slice(0, 4).map((t) => (
-                  <span key={t} className="text-xs text-gray-500 bg-white/5 px-2 py-0.5 rounded">
+                  <span key={t} className="text-xs text-gray-400 bg-white/5 px-2 py-0.5 rounded">
                     {t}
                   </span>
                 ))}
                 {project.tech.length > 4 && (
-                  <span className="text-xs text-gray-700 px-1 py-0.5">
+                  <span className="text-xs text-gray-400 px-1 py-0.5">
                     +{project.tech.length - 4}
                   </span>
                 )}

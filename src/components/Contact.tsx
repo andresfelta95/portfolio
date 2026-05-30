@@ -4,7 +4,7 @@ export default function Contact() {
   return (
     <section id="contact" className="py-20 px-6 border-t border-white/5">
       <div className="max-w-6xl mx-auto text-center">
-        <p className="text-xs font-mono text-gray-600 tracking-widest uppercase mb-4">
+        <p className="text-xs font-mono text-gray-400 tracking-widest uppercase mb-4">
           Contact
         </p>
         <h2 className="text-3xl font-bold text-white mb-4">Let&apos;s connect</h2>
@@ -27,7 +27,7 @@ export default function Contact() {
             <Github size={16} /> andresfelta95
           </a>
         </div>
-        <p className="text-gray-800 text-xs font-mono mt-16">
+        <p className="text-gray-400 text-xs font-mono mt-16">
           Hosted on paisbru.com · Self-hosted · Docker + Cloudflare Tunnel
         </p>
       </div>

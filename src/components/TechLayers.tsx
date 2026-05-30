@@ -39,7 +39,7 @@ export default function TechLayers() {
 
   return (
     <div>
-      <p className="text-gray-600 text-xs font-mono mb-4 tracking-widest uppercase">
+      <p className="text-gray-400 text-xs font-mono mb-4 tracking-widest uppercase">
         Tech Stack
       </p>
       <div className="space-y-2">
@@ -51,22 +51,23 @@ export default function TechLayers() {
             transition={{ duration: 0.4, delay: 0.5 + i * 0.1 }}
             onMouseEnter={() => setHovered(layer.id)}
             onMouseLeave={() => setHovered(null)}
-            className="border border-white/5 rounded-xl p-4 cursor-default transition-all duration-300"
+            className="border border-white/10 rounded-xl p-4 cursor-default transition-all duration-300 backdrop-blur-sm"
             style={{
               borderLeftColor: layer.color,
               borderLeftWidth: "3px",
-              backgroundColor: hovered === layer.id ? `${layer.color}0d` : "transparent",
+              // Solid dark base so the cards don't blend into the synthwave backdrop.
+              backgroundColor: hovered === layer.id ? `${layer.color}1f` : "rgba(10,14,20,0.7)",
             }}
           >
             <div className="flex items-center justify-between mb-2">
               <span className="font-mono text-sm font-semibold" style={{ color: layer.color }}>
                 {layer.label}
               </span>
-              <span className="text-gray-700 text-xs font-mono">{layer.number}</span>
+              <span className="text-gray-400 text-xs font-mono">{layer.number}</span>
             </div>
             <div className="flex flex-wrap gap-1.5">
               {layer.tech.map((t) => (
-                <span key={t} className="text-xs px-2 py-0.5 rounded bg-white/5 text-gray-400">
+                <span key={t} className="text-xs px-2 py-0.5 rounded bg-white/10 text-gray-300">
                   {t}
                 </span>
               ))}

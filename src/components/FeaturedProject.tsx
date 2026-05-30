@@ -12,7 +12,7 @@ export default function FeaturedProject() {
   return (
     <section className="py-20 px-6 bg-[#0a0e14] border-y border-white/5">
       <div className="max-w-6xl mx-auto">
-        <p className="text-base font-pixel text-gray-600 tracking-[0.3em] uppercase mb-2">
+        <p className="text-base font-pixel text-gray-400 tracking-[0.3em] uppercase mb-2">
           {"// "}FEATURED PROJECT
         </p>
         <h2 className="text-3xl font-bold text-white mb-3">
@@ -26,7 +26,7 @@ export default function FeaturedProject() {
 
         {/* Architecture diagram */}
         <div className="bg-[#080c10] border border-white/5 rounded-xl p-6 md:p-8 mb-8 overflow-x-auto">
-          <p className="text-sm font-pixel text-gray-700 mb-6 uppercase tracking-[0.3em]">
+          <p className="text-sm font-pixel text-gray-400 mb-6 uppercase tracking-[0.3em]">
             &gt; system architecture
           </p>
           <div className="flex items-center gap-0 min-w-max">
@@ -42,10 +42,10 @@ export default function FeaturedProject() {
                   <p className="text-sm font-semibold" style={{ color: step.color }}>
                     {step.label}
                   </p>
-                  <p className="text-xs text-gray-600 mt-1">{step.sub}</p>
+                  <p className="text-xs text-gray-400 mt-1">{step.sub}</p>
                 </div>
                 {i < arch.length - 1 && (
-                  <div className="flex items-center px-2 text-gray-700">
+                  <div className="flex items-center px-2 text-gray-400">
                     <div className="w-6 h-px bg-white/10" />
                     <span className="text-sm ml-0.5">›</span>
                   </div>
