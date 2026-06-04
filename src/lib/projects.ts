@@ -30,6 +30,17 @@ export const projects: Project[] = [
     status: "live",
   },
   {
+    id: "fifa-tracker",
+    title: "FIFA Tracker — World Cup 2026 Album",
+    description:
+      "Web app to track filling the Panini World Cup 2026 sticker album (980 stickers): owned / missing / duplicates, special-colour parallels with rarity, team-themed pages and an Amazon-style section drawer. Real player photos render with an owned-is-clear / missing-is-ghost effect. Full accounts — email, Google and Microsoft sign-in, two-factor auth and password reset — plus a Community leaderboard where you browse others' albums read-only and get duplicate-swap matches. React + Vite frontend, Express + PostgreSQL backend, Dockerized behind Cloudflare.",
+    categories: ["web", "infra"],
+    featured: true,
+    tech: ["React", "TypeScript", "Vite", "Tailwind", "Express", "PostgreSQL", "JWT", "OAuth 2.0", "TOTP 2FA", "Docker"],
+    live: "https://fifa.paisbru.com",
+    status: "live",
+  },
+  {
     id: "maketabs",
     title: "MakeTabs",
     description:
@@ -45,7 +56,7 @@ export const projects: Project[] = [
     id: "retro-creator",
     title: "Retro Creator",
     description:
-      "Desktop AI sidekick for pixel-art workflows. Electron app with five tools backed by Claude (palette gen, sprite critique with vision, tileset planner with autotiling rules, animation brief, concept generator) and a self-hosted ComfyUI container running SDXL Turbo + pixel-art LoRA on a local GPU. API keys encrypted with safeStorage (with an AES-GCM fallback for headless environments).",
+      "Desktop AI sidekick for pixel-art workflows. Electron app with tools backed by Claude (palette gen, sprite critique with vision, tileset planner with autotiling rules, animation brief, concept generator) plus per-project reference libraries and a re-runnable call history. Self-hosted ComfyUI container runs SDXL Turbo + a pixel-art LoRA on a local GPU, with img2img reference for character consistency. API keys encrypted with safeStorage (AES-GCM fallback for headless environments).",
     categories: ["desktop", "infra"],
     featured: false,
     tech: ["Electron", "React", "TypeScript", "Vite", "Anthropic SDK", "ComfyUI", "SDXL Turbo", "sharp", "Tailwind"],
@@ -56,7 +67,7 @@ export const projects: Project[] = [
     id: "greenday-game",
     title: "GREEN DAY: Boulevard of Broken Pixels",
     description:
-      "16-bit side-scrolling tribute platformer in Godot 4. Each level is a Green Day song with chiptune backing generated live by MakeTabs. Art direction: chibi punk, Scott Pilgrim style. Game design document complete, asset pipeline being built in Retro Creator.",
+      "16-bit side-scrolling tribute platformer in Godot 4. Each level is a Green Day song with chiptune backing generated live by MakeTabs. Art direction: Scott Pilgrim-inspired pixel art. Game design document complete, asset pipeline being built in Retro Creator.",
     categories: ["game"],
     featured: false,
     tech: ["Godot 4", "GDScript", "Pixel Art", "Aseprite", "MakeTabs"],
@@ -68,10 +79,10 @@ export const projects: Project[] = [
     id: "amd-tracker",
     title: "AMD Price Tracker CA",
     description:
-      "Tracks Canadian CAD prices on AMD CPUs and GPUs across retailers. Web scraping with axios/cheerio, full price history in PostgreSQL, interactive charts, and a price alert system.",
+      "Tracks Canadian CAD prices on AMD CPUs and GPUs across retailers — Newegg and Canada Computers via axios/cheerio, and Amazon.ca through a Playwright stealth microservice. Full price history in PostgreSQL, interactive charts, GPU AIB variants and a price-alert system, refreshed on a schedule.",
     categories: ["web", "infra"],
     featured: false,
-    tech: ["Next.js 14", "TypeScript", "PostgreSQL", "Docker", "Web Scraping", "Tailwind CSS"],
+    tech: ["Next.js 14", "TypeScript", "PostgreSQL", "Docker", "Playwright", "Web Scraping", "Tailwind CSS"],
     github: "https://github.com/andresfelta95/amd-price-tracker",
     live: "https://amd.paisbru.com",
     status: "live",
@@ -110,7 +121,7 @@ export const projects: Project[] = [
     id: "server-infra",
     title: "Personal Server Infrastructure",
     description:
-      "Full self-hosted stack on WSL2/Docker: nginx reverse proxy, PostgreSQL, MongoDB, Redis, Cloudflare Tunnel, Uptime Kuma monitoring, and multiple apps running 24/7 at paisbru.com.",
+      "Full self-hosted stack on WSL2/Docker: nginx reverse proxy, PostgreSQL, MongoDB, Redis, Cloudflare Tunnel and Uptime Kuma monitoring, running multiple apps 24/7 behind paisbru.com — this portfolio, MakeTabs, the AMD price tracker, FIFA Tracker and its API, plus a GPU-backed ComfyUI container.",
     categories: ["infra"],
     featured: false,
     tech: ["Docker", "Docker Compose", "nginx", "PostgreSQL", "Cloudflare Tunnel", "WSL2"],
