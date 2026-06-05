@@ -35,7 +35,7 @@ export const projects: Project[] = [
     description:
       "Web app to track filling the Panini World Cup 2026 sticker album (980 stickers): owned / missing / duplicates, special-colour parallels with rarity, team-themed pages and an Amazon-style section drawer. Real player photos render with an owned-is-clear / missing-is-ghost effect. Full accounts — email, Google and Microsoft sign-in, two-factor auth and password reset — plus a Community leaderboard where you browse others' albums read-only and get duplicate-swap matches. React + Vite frontend, Express + PostgreSQL backend, Dockerized behind Cloudflare.",
     categories: ["web", "infra"],
-    featured: true,
+    featured: false,
     tech: ["React", "TypeScript", "Vite", "Tailwind", "Express", "PostgreSQL", "JWT", "OAuth 2.0", "TOTP 2FA", "Docker"],
     live: "https://fifa.paisbru.com",
     status: "live",
