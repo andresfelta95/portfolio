@@ -14,7 +14,7 @@ export default function Contact() {
         <div className="flex flex-wrap items-center justify-center gap-4">
           <a
             href="mailto:andresfelta95@gmail.com"
-            className="flex items-center gap-2 bg-[#0f1419] border border-white/5 hover:border-[#00d4ff]/30 hover:text-[#00d4ff] text-gray-300 px-6 py-3 rounded-xl transition-colors"
+            className="flex items-center gap-2 bg-[#0f1419] border border-white/5 shadow-card hover:border-[#00d4ff]/30 hover:text-[#00d4ff] hover:-translate-y-0.5 active:translate-y-0 text-gray-300 px-6 py-3 rounded-xl transition-all duration-200"
           >
             <Mail size={16} /> andresfelta95@gmail.com
           </a>
@@ -22,7 +22,7 @@ export default function Contact() {
             href="https://github.com/andresfelta95"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 bg-[#0f1419] border border-white/5 hover:border-[#00d4ff]/30 hover:text-[#00d4ff] text-gray-300 px-6 py-3 rounded-xl transition-colors"
+            className="flex items-center gap-2 bg-[#0f1419] border border-white/5 shadow-card hover:border-[#00d4ff]/30 hover:text-[#00d4ff] hover:-translate-y-0.5 active:translate-y-0 text-gray-300 px-6 py-3 rounded-xl transition-all duration-200"
           >
             <Github size={16} /> andresfelta95
           </a>

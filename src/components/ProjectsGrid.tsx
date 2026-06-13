@@ -57,7 +57,7 @@ export default function ProjectsGrid() {
             <button
               key={f.value}
               onClick={() => setActive(f.value)}
-              className={`text-sm px-4 py-1.5 rounded-full border transition-colors ${
+              className={`text-sm px-4 py-1.5 rounded-full border transition-all duration-150 active:scale-95 ${
                 active === f.value
                   ? "border-[#00d4ff] text-[#00d4ff] bg-[#00d4ff]/10"
                   : "border-white/10 text-gray-400 hover:border-white/20 hover:text-white"
@@ -73,7 +73,7 @@ export default function ProjectsGrid() {
           {visible.map((project) => (
             <div
               key={project.id}
-              className="bg-[#0f1419] border border-white/5 rounded-xl overflow-hidden flex flex-col group hover:border-white/10 transition-colors"
+              className="bg-[#0f1419] border border-white/5 rounded-xl overflow-hidden flex flex-col group shadow-card hover:shadow-card-hover hover:border-[#00d4ff]/20 hover:-translate-y-1 transition-all duration-300"
             >
               {/* Optional preview image — used for the games / creative tools.
                   Pixel-art look is preserved with image-rendering:pixelated. */}

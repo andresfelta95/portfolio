@@ -1,6 +1,16 @@
 import type { Metadata } from "next";
-import { VT323, Press_Start_2P } from "next/font/google";
+import { VT323, Press_Start_2P, Sora } from "next/font/google";
 import "./globals.css";
+
+// Body/UI typeface — geometric, technical character that suits the synthwave
+// theme while staying highly readable at long-form sizes. Replaces the previous
+// system-sans fallback. Consumed as the default `font-sans` via Tailwind.
+const sora = Sora({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-sora",
+});
 
 // CSS variable consumed via Tailwind's `font-pixel` and `font-press` utilities.
 const vt323 = VT323({
@@ -25,8 +35,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${vt323.variable} ${pressStart.variable}`}>
-      <body className="bg-[#080c10] text-white antialiased relative">
+    <html lang="en" className={`${sora.variable} ${vt323.variable} ${pressStart.variable}`}>
+      <body className="bg-[#080c10] text-white antialiased relative font-sans">
         {/* CRT scanline overlay — full viewport, barely-there opacity. */}
         <div
           aria-hidden

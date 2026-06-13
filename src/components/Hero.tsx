@@ -51,13 +51,13 @@ export default function Hero() {
                 href="https://github.com/andresfelta95"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-[#00d4ff] text-[#080c10] font-semibold px-6 py-3 rounded-lg hover:bg-cyan-300 transition-colors"
+                className="bg-[#00d4ff] text-[#080c10] font-semibold px-6 py-3 rounded-lg shadow-glow hover:bg-cyan-300 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
               >
                 View GitHub
               </a>
               <a
                 href="#projects"
-                className="border border-white/10 text-gray-300 hover:border-[#00d4ff]/40 hover:text-[#00d4ff] px-6 py-3 rounded-lg transition-colors"
+                className="border border-white/10 text-gray-300 hover:border-[#00d4ff]/40 hover:text-[#00d4ff] hover:-translate-y-0.5 active:translate-y-0 px-6 py-3 rounded-lg transition-all duration-200"
               >
                 See Projects
               </a>
