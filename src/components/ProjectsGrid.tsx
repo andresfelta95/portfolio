@@ -5,13 +5,13 @@ import { Github, ExternalLink } from "lucide-react";
 import { projects, type ProjectCategory } from "@/lib/projects";
 
 const FILTERS: { label: string; value: ProjectCategory | "all" }[] = [
-  { label: "All", value: "all" },
-  { label: "Hardware", value: "hardware" },
-  { label: "Web", value: "web" },
-  { label: "Mobile", value: "mobile" },
-  { label: "Desktop", value: "desktop" },
-  { label: "Games", value: "game" },
-  { label: "Infrastructure", value: "infra" },
+  { label: "all", value: "all" },
+  { label: "hardware", value: "hardware" },
+  { label: "web", value: "web" },
+  { label: "mobile", value: "mobile" },
+  { label: "desktop", value: "desktop" },
+  { label: "games", value: "game" },
+  { label: "infra", value: "infra" },
 ];
 
 const COLORS: Record<ProjectCategory, string> = {
@@ -24,18 +24,18 @@ const COLORS: Record<ProjectCategory, string> = {
 };
 
 const LABELS: Record<ProjectCategory, string> = {
-  hardware: "Hardware",
-  mobile: "Mobile",
-  web: "Web",
-  infra: "Infra",
-  desktop: "Desktop",
-  game: "Game",
+  hardware: "hardware",
+  mobile: "mobile",
+  web: "web",
+  infra: "infra",
+  desktop: "desktop",
+  game: "game",
 };
 
 const STATUS_LABELS: Record<NonNullable<import("@/lib/projects").Project["status"]>, { label: string; color: string }> = {
-  live: { label: "● LIVE", color: "#22c55e" },
-  "in-dev": { label: "▶ IN DEV", color: "#eab308" },
-  "pre-production": { label: "◇ PRE-PROD", color: "#a855f7" },
+  live: { label: "● live", color: "#4ade80" },
+  "in-dev": { label: "▶ in-dev", color: "#eab308" },
+  "pre-production": { label: "◇ pre-prod", color: "#a855f7" },
 };
 
 export default function ProjectsGrid() {
@@ -48,22 +48,26 @@ export default function ProjectsGrid() {
   return (
     <section id="projects" className="py-20 px-6">
       <div className="max-w-6xl mx-auto">
-        <p className="text-base font-pixel text-gray-400 tracking-[0.3em] uppercase mb-2">{"// "}PROJECTS</p>
-        <h2 className="text-3xl font-bold text-white mb-8">More Work</h2>
+        <p className="text-sm text-muted mb-2">
+          <span className="text-term">$</span> ls -la projects/
+        </p>
+        <h2 className="text-2xl sm:text-3xl font-extrabold text-txt mb-8 tracking-tight">
+          more work
+        </h2>
 
-        {/* Filters */}
-        <div className="flex flex-wrap gap-2 mb-8">
+        {/* Filters as flags */}
+        <div className="flex flex-wrap gap-2 mb-8 text-sm">
           {FILTERS.map((f) => (
             <button
               key={f.value}
               onClick={() => setActive(f.value)}
-              className={`text-sm px-4 py-1.5 rounded-full border transition-all duration-150 active:scale-95 ${
+              className={`px-3 py-1.5 border transition-colors active:translate-y-px ${
                 active === f.value
-                  ? "border-[#00d4ff] text-[#00d4ff] bg-[#00d4ff]/10"
-                  : "border-white/10 text-gray-400 hover:border-white/20 hover:text-white"
+                  ? "border-term text-term"
+                  : "border-line text-muted hover:border-muted hover:text-txt"
               }`}
             >
-              {f.label}
+              --{f.label}
             </button>
           ))}
         </div>
@@ -73,79 +77,68 @@ export default function ProjectsGrid() {
           {visible.map((project) => (
             <div
               key={project.id}
-              className="bg-[#0f1419] border border-white/5 rounded-xl overflow-hidden flex flex-col group shadow-card hover:shadow-card-hover hover:border-[#00d4ff]/20 hover:-translate-y-1 transition-all duration-300"
+              className="bg-panel border border-line overflow-hidden flex flex-col group hover:border-term/40 transition-colors"
             >
-              {/* Optional preview image — used for the games / creative tools.
-                  Pixel-art look is preserved with image-rendering:pixelated. */}
               {project.image && (
-                <div className="relative aspect-[16/9] bg-[#0a0e14] overflow-hidden border-b border-white/5">
+                <div className="relative aspect-[16/9] bg-bg overflow-hidden border-b border-line">
                   <img
                     src={project.image}
                     alt=""
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
                     style={{ imageRendering: "pixelated" }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0f1419] via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-panel via-transparent to-transparent" />
                 </div>
               )}
 
-              <div className="p-5 flex flex-col flex-1">
-                {/* Category + status row */}
+              <div className="p-4 flex flex-col flex-1">
                 <div className="flex items-center gap-1.5 mb-3 flex-wrap">
                   {project.categories.map((cat) => (
                     <span
                       key={cat}
-                      className="text-xs px-2 py-0.5 rounded font-mono"
-                      style={{
-                        color: COLORS[cat],
-                        backgroundColor: `${COLORS[cat]}15`,
-                      }}
+                      className="text-xs px-1.5 py-0.5 border"
+                      style={{ color: COLORS[cat], borderColor: `${COLORS[cat]}55` }}
                     >
                       {LABELS[cat]}
                     </span>
                   ))}
                   {project.status && (
                     <span
-                      className="text-[10px] px-2 py-0.5 rounded font-pixel tracking-wider ml-auto"
-                      style={{
-                        color: STATUS_LABELS[project.status].color,
-                        backgroundColor: `${STATUS_LABELS[project.status].color}10`,
-                      }}
+                      className="text-[10px] px-1.5 py-0.5 ml-auto"
+                      style={{ color: STATUS_LABELS[project.status].color }}
                     >
                       {STATUS_LABELS[project.status].label}
                     </span>
                   )}
                 </div>
 
-                <h3 className="text-white font-semibold mb-2">{project.title}</h3>
-                <p className="text-gray-400 text-sm mb-4 flex-1 leading-relaxed">
+                <h3 className="text-txt font-semibold mb-2">{project.title}</h3>
+                <p className="text-muted text-sm mb-4 flex-1 leading-relaxed">
                   {project.description}
                 </p>
 
-              {/* Tech pills */}
-              <div className="flex flex-wrap gap-1.5 mb-4">
-                {project.tech.slice(0, 4).map((t) => (
-                  <span key={t} className="text-xs text-gray-400 bg-white/5 px-2 py-0.5 rounded">
-                    {t}
-                  </span>
-                ))}
-                {project.tech.length > 4 && (
-                  <span className="text-xs text-gray-400 px-1 py-0.5">
-                    +{project.tech.length - 4}
-                  </span>
-                )}
-              </div>
+                <div className="flex flex-wrap gap-1.5 mb-4">
+                  {project.tech.slice(0, 4).map((t) => (
+                    <span key={t} className="text-xs text-muted border border-line px-1.5 py-0.5">
+                      {t}
+                    </span>
+                  ))}
+                  {project.tech.length > 4 && (
+                    <span className="text-xs text-muted px-1 py-0.5">
+                      +{project.tech.length - 4}
+                    </span>
+                  )}
+                </div>
 
-                {/* Links */}
-                <div className="flex items-center gap-4 pt-3 border-t border-white/5">
+                <div className="flex items-center gap-4 pt-3 border-t border-line text-xs">
                   {project.github && (
                     <a
                       href={project.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-white transition-colors"
+                      className="flex items-center gap-1.5 text-muted hover:text-txt transition-colors"
                     >
-                      <Github size={12} /> GitHub
+                      <Github size={12} /> github
                     </a>
                   )}
                   {project.live && (
@@ -153,9 +146,9 @@ export default function ProjectsGrid() {
                       href={project.live}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 text-xs text-[#00d4ff] hover:text-cyan-300 transition-colors ml-auto"
+                      className="flex items-center gap-1.5 text-term hover:underline ml-auto"
                     >
-                      <ExternalLink size={12} /> Live
+                      <ExternalLink size={12} /> live
                     </a>
                   )}
                 </div>

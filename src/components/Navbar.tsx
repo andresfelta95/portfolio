@@ -1,27 +1,36 @@
 export default function Navbar() {
+  const links = [
+    { href: "#live", label: "live" },
+    { href: "#projects", label: "projects" },
+    { href: "#contact", label: "contact" },
+  ];
+
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#080c10]/80 backdrop-blur-sm">
-      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-        <span className="font-pixel text-[#00d4ff] text-lg tracking-wider">
-          andresfelta95<span className="animate-pulse text-[#00d4ff]/70">_</span>
+    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-line bg-bg/90 backdrop-blur-sm">
+      <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between text-sm">
+        <span className="text-txt">
+          <span className="text-term">andres</span>
+          <span className="text-muted">@paisbru</span>
+          <span className="text-muted">:~$</span>
         </span>
-        <div className="flex items-center gap-6 text-sm text-gray-400">
-          <a href="#live" className="hover:text-white transition-colors hidden sm:block">
-            Live
-          </a>
-          <a href="#projects" className="hover:text-white transition-colors hidden sm:block">
-            Projects
-          </a>
-          <a href="#contact" className="hover:text-white transition-colors hidden sm:block">
-            Contact
-          </a>
+        <div className="flex items-center gap-5 text-muted">
+          {links.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              className="hidden sm:inline hover:text-term transition-colors"
+            >
+              <span className="text-term/50">cd </span>
+              {l.label}/
+            </a>
+          ))}
           <a
             href="https://github.com/andresfelta95"
             target="_blank"
             rel="noopener noreferrer"
-            className="border border-white/10 hover:border-[#00d4ff]/50 hover:text-[#00d4ff] px-3 py-1.5 rounded-md transition-colors"
+            className="border border-line px-3 py-1.5 text-txt hover:border-term hover:text-term transition-colors"
           >
-            GitHub →
+            git remote →
           </a>
         </div>
       </div>

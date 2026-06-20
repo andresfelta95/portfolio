@@ -1,70 +1,86 @@
 "use client";
 
 import { motion } from "framer-motion";
-import SynthwaveBackdrop from "./SynthwaveBackdrop";
 import TechLayers from "./TechLayers";
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex flex-col justify-center pt-16 px-6 overflow-hidden">
-      <SynthwaveBackdrop />
-      <div className="relative z-10 max-w-6xl mx-auto w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+    <section className="relative min-h-screen flex flex-col justify-center pt-14 px-6 overflow-hidden">
+      {/* Faint terminal grid — texture, not gloss. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.6]"
+        style={{
+          backgroundImage:
+            "linear-gradient(#ffffff08 1px, transparent 1px), linear-gradient(90deg, #ffffff08 1px, transparent 1px)",
+          backgroundSize: "32px 32px",
+          maskImage: "radial-gradient(ellipse 70% 60% at 30% 40%, #000 0%, transparent 100%)",
+          WebkitMaskImage: "radial-gradient(ellipse 70% 60% at 30% 40%, #000 0%, transparent 100%)",
+        }}
+      />
 
-          {/* Left — Text */}
+      <div className="relative z-10 max-w-6xl mx-auto w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
+          {/* Left — terminal output */}
           <div>
             <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="text-[#00d4ff] font-pixel text-base tracking-[0.3em] mb-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4 }}
+              className="text-muted text-sm mb-4"
             >
-              &gt; HELLO, I&apos;M
+              <span className="text-term">$</span> whoami
             </motion.p>
+
             <motion.h1
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-5xl lg:text-6xl font-bold text-white mb-5 leading-tight"
+              className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-txt mb-5 leading-[1.05] tracking-tight"
             >
-              Andrés Tangarife
+              andres
+              <wbr />
+              _tangarife
             </motion.h1>
+
             <motion.p
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-lg text-gray-200 mb-8 leading-relaxed"
-              style={{ textShadow: "0 1px 12px rgba(0,0,0,0.6)" }}
+              className="text-base text-muted mb-8 leading-relaxed max-w-lg"
             >
-              Building from{" "}
-              <span className="text-[#ff8a3c] font-medium">silicon</span> to{" "}
-              <span className="text-[#5fff9b] font-medium">cloud</span>.{" "}
-              Embedded systems, mobile apps, web platforms, and self-hosted infrastructure.
+              <span className="text-term"># </span>
+              building from{" "}
+              <span className="text-[#ff8a3c]">silicon</span> to{" "}
+              <span className="text-term">cloud</span> — embedded systems, mobile
+              apps, web platforms, and self-hosted infrastructure.
+              <span className="cursor" aria-hidden />
             </motion.p>
+
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex flex-wrap items-center gap-4"
+              className="flex flex-wrap items-center gap-3 text-sm"
             >
               <a
                 href="https://github.com/andresfelta95"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-[#00d4ff] text-[#080c10] font-semibold px-6 py-3 rounded-lg shadow-glow hover:bg-cyan-300 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
+                className="border border-term bg-term text-bg font-semibold px-5 py-2.5 hover:bg-transparent hover:text-term transition-colors"
               >
-                View GitHub
+                ./view-github.sh
               </a>
               <a
                 href="#projects"
-                className="border border-white/10 text-gray-300 hover:border-[#00d4ff]/40 hover:text-[#00d4ff] hover:-translate-y-0.5 active:translate-y-0 px-6 py-3 rounded-lg transition-all duration-200"
+                className="border border-line text-muted px-5 py-2.5 hover:border-term hover:text-term transition-colors"
               >
-                See Projects
+                cd projects/
               </a>
             </motion.div>
           </div>
 
-          {/* Right — Tech layers */}
+          {/* Right — tech layers */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
