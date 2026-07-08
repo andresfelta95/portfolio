@@ -31,12 +31,12 @@ export const projects: Project[] = [
   },
   {
     id: "fifa-tracker",
-    title: "FIFA Tracker — World Cup 2026 Album",
+    title: "FIFA Tracker — World Cup 2026 Album & Live Scores",
     description:
-      "Web app to track filling the Panini World Cup 2026 sticker album (980 stickers): owned / missing / duplicates, special-colour parallels with rarity, team-themed pages and an Amazon-style section drawer. Real player photos render with an owned-is-clear / missing-is-ghost effect. Full accounts — email, Google and Microsoft sign-in, two-factor auth and password reset — plus a Community leaderboard where you browse others' albums read-only and get duplicate-swap matches. React + Vite frontend, Express + PostgreSQL backend, Dockerized behind Cloudflare.",
+      "Web app to track filling the Panini World Cup 2026 sticker album (980 stickers): owned / missing / duplicates, special-colour parallels with rarity, and QR swap-codes compatible with the official app's format (reverse-engineered gzip bitfields). Full accounts — email, Google and Microsoft sign-in, two-factor auth — plus a Community leaderboard with duplicate-swap matching. A live Matches section follows the real tournament: near-real-time scores (openfootball structure + ESPN overlay with graceful fallback), group standings with best-third qualification, a two-sided knockout bracket that advances winners through penalties, and tappable match pages with starting lineups drawn on a pitch by formation, team stats, goal/card timeline and live play-by-play commentary.",
     categories: ["web", "infra"],
     featured: false,
-    tech: ["React", "TypeScript", "Vite", "Tailwind", "Express", "PostgreSQL", "JWT", "OAuth 2.0", "TOTP 2FA", "Docker"],
+    tech: ["React", "TypeScript", "Vite", "Tailwind", "Express", "PostgreSQL", "ESPN API", "OAuth 2.0", "TOTP 2FA", "Docker"],
     live: "https://fifa.paisbru.com",
     status: "live",
   },
@@ -44,7 +44,7 @@ export const projects: Project[] = [
     id: "maketabs",
     title: "MakeTabs",
     description:
-      "Generate guitar tabs from any Spotify track. Songsterr-first pipeline pulls official human-transcribed tabs, FluidSynth synthesizes a multi-track WAV from the MIDI, and a dual on-page player lets you A/B between an in-browser oscillator mix and the backend render. Falls back to an ML pipeline (Demucs + basic-pitch) for songs Songsterr doesn't have.",
+      "Turn any Spotify track into guitar tabs and 16-bit chiptunes. Songsterr-first pipeline pulls official human-transcribed tabs, with an ML fallback (Demucs + basic-pitch) for songs it doesn't have. The chiptune engine quantizes the transcription onto a beat grid and rebuilds it as melody / harmony / bass voices — with opt-in solo and drum channels — played on a Web Audio synth; a dual on-page player A/Bs the in-browser oscillator mix against a FluidSynth backend render.",
     categories: ["web", "infra"],
     featured: false,
     tech: ["Python", "FastAPI", "React", "TypeScript", "Songsterr API", "FluidSynth", "Demucs", "basic-pitch", "Web Audio API", "PostgreSQL"],
