@@ -12,7 +12,17 @@ Cloudflare Tunnel.
 - **framer-motion** for hero / intro animations
 - **lucide-react** for line icons
 - Pixel-font accents via `VT323` and `Press Start 2P` from `next/font/google`
-- Deployed in Docker behind nginx + Cloudflare Tunnel at <https://paisbru.com>
+- Deployed in Docker behind a Cloudflare Tunnel at <https://paisbru.com>
+
+## Status (2026-08-24)
+
+✅ **Live and stable.** 10 projects in the grid: 5 marked `live`, 2 `in-dev`
+(Retro Creator, ComputerUseNanny), 2 `pre-production` (GREEN DAY game). The
+household finance tracker is deliberately **not** listed — it holds financial data
+and lives behind Cloudflare Access.
+
+No outstanding work. Content refresh is the only maintenance: project descriptions
+were last reviewed 2026-07-07, and `status` fields drift as apps ship.
 
 ## Sections
 
@@ -38,9 +48,20 @@ npm start
 
 ## Deploy
 
-A standalone Docker image is produced by `Dockerfile`. The container runs
-behind the same nginx + Cloudflare Tunnel stack that hosts the other apps on
-this server.
+Two containers, both defined in `/home/server_pc/docker/compose/portfolio.yml`:
+
+```bash
+docker compose -f /home/server_pc/docker/compose/portfolio.yml up -d --build
+```
+
+- **`portfolio`** — the Next.js standalone image (512 MB / 0.5 CPU). No host port;
+  cloudflared routes `paisbru.com` and `www.paisbru.com` straight to
+  `portfolio:3000`. nginx is *not* in the request path.
+- **`portfolio-stats`** — small stats sidecar on :5000 that the Live-status section
+  reads through `/api/live` (`STATS_SERVICE_URL`). Optional Uptime Kuma wiring is
+  stubbed in the compose file but commented out.
+
+> Code is baked into the image — editing source does nothing live until you rebuild.
 
 ## Project data
 
