@@ -1,6 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { ExternalLink } from "lucide-react";
+import { SPRITES } from "@/lib/sprites";
+import { projects } from "@/lib/projects";
+import { Panel, SectionHeading, Led, Tag } from "./ui";
 
 interface LiveData {
   stats: {
@@ -14,32 +18,50 @@ interface LiveData {
   services: { up: number; total: number } | null;
 }
 
-function Dot({ ok }: { ok: boolean }) {
-  return (
-    <span
-      className={`inline-block w-2 h-2 animate-pulse ${ok ? "bg-term" : "bg-line"}`}
-    />
-  );
-}
+/** Public endpoints, read off the project list so the two never disagree. */
+const ENDPOINTS = [
+  { host: "paisbru.com", what: "this page", url: "https://paisbru.com" },
+  ...projects
+    .filter((p) => p.live)
+    .map((p) => ({
+      host: p.live!.replace("https://", ""),
+      what: p.title.split(" — ")[0],
+      url: p.live!,
+    })),
+];
 
-function Bar({ value, color }: { value: number; color: string }) {
+const SEGMENTS = 24;
+
+/**
+ * Segmented meter. Discrete blocks rather than a smooth fill — a bar graph on
+ * an LED panel, which is what the rest of the page is pretending to be.
+ */
+function PixelBar({ value, color }: { value: number; color: string }) {
+  const filled = Math.round((Math.min(Math.max(value, 0), 100) / 100) * SEGMENTS);
   return (
-    <div className="h-1.5 bg-line overflow-hidden mt-1">
-      <div
-        className="h-full transition-all duration-500"
-        style={{ width: `${Math.min(value, 100)}%`, backgroundColor: color }}
-      />
+    <div className="flex gap-[2px] mt-1.5" aria-hidden>
+      {Array.from({ length: SEGMENTS }, (_, i) => (
+        <span
+          key={i}
+          className="h-2 flex-1"
+          style={{
+            backgroundColor: i < filled ? color : "#16203a",
+            boxShadow: i < filled ? `0 0 5px ${color}66` : undefined,
+          }}
+        />
+      ))}
     </div>
   );
 }
 
-function Panel({ cmd, children }: { cmd: string; children: React.ReactNode }) {
+function Meter({ label, read, value, color }: { label: string; read: string; value: number; color: string }) {
   return (
-    <div className="border border-line bg-panel">
-      <div className="border-b border-line px-4 py-2 text-xs text-muted">
-        <span className="text-term">$</span> {cmd}
+    <div>
+      <div className="flex justify-between text-xs">
+        <span className="text-muted">{label}</span>
+        <span className="text-txt">{read}</span>
       </div>
-      <div className="p-4">{children}</div>
+      <PixelBar value={value} color={color} />
     </div>
   );
 }
@@ -64,99 +86,110 @@ export default function LiveSection() {
   }, []);
 
   return (
-    <section id="live" className="py-20 px-6 border-t border-line">
+    <section id="live" className="relative py-20 sm:py-24 px-5 sm:px-6 border-t border-line">
       <div className="max-w-6xl mx-auto">
-        <div className="flex items-center gap-3 mb-10 text-sm text-muted">
-          <Dot ok={true} />
-          <span>
-            <span className="text-term">$</span> uptime --self-hosted
-          </span>
-        </div>
+        <SectionHeading
+          cmd="ssh paisbru && watch -n30 ./status"
+          title="LIVE FROM THE BOX"
+          sprite={SPRITES.wave}
+          accent="#4ade80"
+        >
+          Everything below runs on one machine under a desk in Alberta — WSL2, Docker, a
+          Cloudflare Tunnel and no open ports. These numbers are read from it every 30 seconds.
+        </SectionHeading>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {/* AMD Price Tracker */}
-          <a
-            href="https://amd.paisbru.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="border border-line bg-panel hover:border-term/50 transition-colors group block"
-          >
-            <div className="border-b border-line px-4 py-2 flex items-center justify-between text-xs text-muted">
-              <span><span className="text-term">$</span> ./app</span>
-              <Dot ok={true} />
-            </div>
-            <div className="p-4">
-              <p className="text-txt font-semibold mb-1">AMD Price Tracker</p>
-              <p className="text-muted text-sm mb-4">scraping CA prices · 2× daily</p>
-              <div className="flex flex-wrap gap-1.5 mb-4">
-                {["Next.js 14", "PostgreSQL", "Docker"].map((t) => (
-                  <span key={t} className="text-xs text-muted border border-line px-1.5 py-0.5">
-                    {t}
-                  </span>
-                ))}
-              </div>
-              <p className="text-term text-xs group-hover:underline">amd.paisbru.com →</p>
-            </div>
-          </a>
-
-          {/* Server Stats */}
-          <Panel cmd="top -bn1">
-            {loading ? (
-              <div className="space-y-3 animate-pulse">
-                <div className="h-3 bg-line w-3/4" />
-                <div className="h-1.5 bg-line" />
-                <div className="h-3 bg-line w-1/2 mt-3" />
-                <div className="h-1.5 bg-line" />
-              </div>
-            ) : data?.stats ? (
-              <div className="space-y-3 text-sm">
-                <div>
-                  <div className="flex justify-between text-xs mb-0.5">
-                    <span className="text-muted">cpu</span>
-                    <span className="text-txt">{data.stats.cpu.toFixed(1)}%</span>
-                  </div>
-                  <Bar value={data.stats.cpu} color="#4ade80" />
-                </div>
-                <div>
-                  <div className="flex justify-between text-xs mb-0.5">
-                    <span className="text-muted">ram</span>
-                    <span className="text-txt">
-                      {data.stats.ramUsed}/{data.stats.ramTotal} GB
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          {/* ── Public endpoints ── */}
+          <Panel cmd="curl -I *.paisbru.com" accent="#4ade80" className="lg:col-span-1">
+            <ul className="divide-y divide-line">
+              {ENDPOINTS.map((e) => (
+                <li key={e.host}>
+                  <a
+                    href={e.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2.5 px-4 py-2.5 group hover:bg-panel2 transition-colors"
+                  >
+                    <Led />
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-sm text-txt truncate group-hover:text-term transition-colors">
+                        {e.host}
+                      </span>
+                      <span className="block text-[11px] text-muted truncate">{e.what}</span>
                     </span>
-                  </div>
-                  <Bar value={data.stats.ram} color="#a855f7" />
-                </div>
-                <div>
-                  <div className="flex justify-between text-xs mb-0.5">
-                    <span className="text-muted">disk</span>
-                    <span className="text-txt">{data.stats.disk.toFixed(0)}%</span>
-                  </div>
-                  <Bar value={data.stats.disk} color="#f97316" />
-                </div>
-                <div className="pt-2 border-t border-line flex justify-between text-xs">
-                  <span className="text-muted">uptime</span>
-                  <span className="text-term">{data.stats.uptime}</span>
-                </div>
-              </div>
-            ) : (
-              <p className="text-muted text-sm">stats unavailable</p>
-            )}
+                    <ExternalLink size={12} className="text-muted shrink-0" />
+                  </a>
+                </li>
+              ))}
+            </ul>
           </Panel>
 
-          {/* Services */}
-          <Panel cmd="systemctl status">
-            <p className="text-txt font-semibold mb-1">
-              {data?.services
-                ? `${data.services.up}/${data.services.total} operational`
-                : "self-hosted stack"}
-            </p>
-            <p className="text-muted text-xs mb-4">running 24/7 on paisbru.com</p>
-            <div className="flex flex-wrap gap-1.5">
-              {["nginx", "PostgreSQL", "MongoDB", "Redis", "Cloudflare"].map((s) => (
-                <span key={s} className="text-xs text-muted border border-line px-1.5 py-0.5">
-                  {s}
-                </span>
-              ))}
+          {/* ── Telemetry ── */}
+          <Panel
+            cmd="top -bn1"
+            meta={<span className="text-[10px] text-muted">30s</span>}
+            className="lg:col-span-1"
+          >
+            <div className="p-4">
+              {loading ? (
+                <div className="space-y-4 animate-pulse">
+                  {[0, 1, 2].map((i) => (
+                    <div key={i}>
+                      <div className="h-3 bg-line w-2/3 mb-2" />
+                      <div className="h-2 bg-line" />
+                    </div>
+                  ))}
+                </div>
+              ) : data?.stats ? (
+                <div className="space-y-4">
+                  <Meter
+                    label="cpu"
+                    read={`${data.stats.cpu.toFixed(1)}%`}
+                    value={data.stats.cpu}
+                    color="#22d3ee"
+                  />
+                  <Meter
+                    label="ram"
+                    read={`${data.stats.ramUsed} / ${data.stats.ramTotal} GB`}
+                    value={data.stats.ram}
+                    color="#c084fc"
+                  />
+                  <Meter
+                    label="disk"
+                    read={`${data.stats.disk.toFixed(0)}%`}
+                    value={data.stats.disk}
+                    color="#fb923c"
+                  />
+                  <div className="pt-3 border-t border-line flex justify-between text-xs">
+                    <span className="text-muted">uptime</span>
+                    <span className="text-term neon-term">{data.stats.uptime}</span>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-muted text-sm">
+                  stats unavailable — the sidecar is down, the apps are not.
+                </p>
+              )}
+            </div>
+          </Panel>
+
+          {/* ── Services ── */}
+          <Panel cmd="docker ps | wc -l" accent="#ff2d95" className="lg:col-span-1">
+            <div className="p-4">
+              <p className="font-pixel text-[11px] text-txt mb-3 leading-relaxed">
+                {data?.services ? `${data.services.up}/${data.services.total} UP` : "19 CONTAINERS"}
+              </p>
+              <p className="text-muted text-xs mb-4 leading-relaxed">
+                Reverse proxy, four databases, the tunnel, monitoring and every app above —
+                restarted unless-stopped, backed up nightly.
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {["nginx", "PostgreSQL", "MongoDB", "MySQL", "Redis", "cloudflared", "Uptime Kuma", "Portainer"].map(
+                  (s) => (
+                    <Tag key={s}>{s}</Tag>
+                  )
+                )}
+              </div>
             </div>
           </Panel>
         </div>

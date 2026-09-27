@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import TechLayers from "@/components/TechLayers";
 import LiveSection from "@/components/LiveSection";
 import FeaturedProject from "@/components/FeaturedProject";
 import ProjectsGrid from "@/components/ProjectsGrid";
@@ -11,6 +12,7 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
+        <TechLayers />
         <LiveSection />
         <FeaturedProject />
         <ProjectsGrid />

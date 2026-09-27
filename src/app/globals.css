@@ -3,8 +3,11 @@
 @tailwind utilities;
 
 :root {
-  --bg: #0a0a0a;
+  --bg: #05060d;
+  --cyan: #22d3ee;
+  --magenta: #ff2d95;
   --term: #4ade80;
+  --line: #1b2740;
 }
 
 html {
@@ -13,29 +16,267 @@ html {
 
 body {
   background-color: var(--bg);
-  color: #e4e4e4;
-  /* Mono reads tighter at UI sizes. */
+  color: #dbe6f4;
   letter-spacing: -0.01em;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Pixel rendering. Nothing in the art is allowed to interpolate:
+   a sprite scaled 8× must show 8× squares, not a blur.
+   ───────────────────────────────────────────────────────────── */
+.pixelated {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+}
+svg.crisp,
+.crisp svg,
+.crisp {
+  shape-rendering: crispEdges;
+}
+
+/* Bitmap display face needs air between glyphs or it reads as a wall. */
+.font-pixel {
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Neon
+   ───────────────────────────────────────────────────────────── */
+.neon-cyan {
+  text-shadow: 0 0 6px rgba(34, 211, 238, 0.55), 0 0 18px rgba(34, 211, 238, 0.25);
+}
+.neon-magenta {
+  text-shadow: 0 0 6px rgba(255, 45, 149, 0.55), 0 0 18px rgba(255, 45, 149, 0.25);
+}
+.neon-term {
+  text-shadow: 0 0 6px rgba(74, 222, 128, 0.5);
+}
+/* Sprite bloom — the light a lit pixel would spill onto the board. */
+.sprite-glow {
+  filter: drop-shadow(0 0 4px rgba(34, 211, 238, 0.35)) drop-shadow(0 0 14px rgba(34, 211, 238, 0.15));
+}
+.sprite-glow-magenta {
+  filter: drop-shadow(0 0 4px rgba(255, 45, 149, 0.35)) drop-shadow(0 0 14px rgba(255, 45, 149, 0.15));
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Signals travelling a trace. Each animated path carries its own
+   measured length in --flow-len so the dash crosses it exactly once.
+   ───────────────────────────────────────────────────────────── */
+@keyframes trace-flow {
+  from {
+    stroke-dashoffset: var(--flow-len, 1000);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.trace-flow {
+  animation: trace-flow var(--flow-dur, 6s) linear infinite;
+  animation-delay: var(--flow-delay, 0s);
+}
+
+/* An LED that is actually doing something. */
+@keyframes led {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
+.led {
+  animation: led 1.6s steps(2, end) infinite;
+}
+
+/* CRT mains hum — a barely-there brightness wobble over the whole page. */
+@keyframes flicker {
+  0%,
+  91%,
+  100% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 0.72;
+  }
+  93% {
+    opacity: 1;
+  }
+  96% {
+    opacity: 0.86;
+  }
+  97% {
+    opacity: 1;
+  }
+}
+.flicker {
+  animation: flicker 7s linear infinite;
+}
+
+/* The one bright scan bar sweeping the tube. */
+@keyframes scanbar {
+  0% {
+    transform: translateY(-20vh);
+  }
+  100% {
+    transform: translateY(120vh);
+  }
+}
+.scanbar {
+  animation: scanbar 9s linear infinite;
 }
 
 /* Blinking block cursor — the signature terminal element. */
 @keyframes blink {
-  0%, 49%   { opacity: 1; }
-  50%, 100% { opacity: 0; }
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
 }
 .cursor {
   display: inline-block;
-  width: 0.6em;
-  height: 1.05em;
+  width: 0.55em;
+  height: 1em;
   margin-left: 0.15em;
-  background: var(--term);
+  background: var(--cyan);
+  box-shadow: 0 0 8px rgba(34, 211, 238, 0.7);
   vertical-align: text-bottom;
   animation: blink 1.1s steps(1) infinite;
 }
 
-/* Single visible keyboard-focus ring — terminal green. */
+/* ─────────────────────────────────────────────────────────────
+   Entrances. CSS rather than JS: the hero must be readable even if
+   the bundle never arrives, and `both` fill leaves the element in its
+   final state the moment reduced-motion collapses the duration.
+   ───────────────────────────────────────────────────────────── */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise {
+  animation: rise 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: var(--rise-delay, 0s);
+}
+
+@keyframes boot {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.boot {
+  animation: boot 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: var(--rise-delay, 0s);
+}
+
+/* Sprites bob by whole pixels so the art never lands off-grid. */
+@keyframes pixel-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+.pixel-bob {
+  animation: pixel-bob 3.2s steps(4, end) infinite;
+  animation-delay: var(--bob-delay, 0s);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Chromatic-split glitch. Two offset copies of the text are drawn
+   from data-text and jitter on their own clocks.
+   ───────────────────────────────────────────────────────────── */
+.glitch {
+  position: relative;
+  display: inline-block;
+}
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.glitch::before {
+  color: var(--cyan);
+  animation: glitch-a 5.5s steps(1) infinite;
+}
+.glitch::after {
+  color: var(--magenta);
+  animation: glitch-b 5.5s steps(1) infinite;
+}
+@keyframes glitch-a {
+  0%,
+  88%,
+  100% {
+    opacity: 0;
+    transform: none;
+    clip-path: none;
+  }
+  89% {
+    opacity: 0.85;
+    transform: translate(-2px, 1px);
+    clip-path: inset(12% 0 58% 0);
+  }
+  91% {
+    opacity: 0.85;
+    transform: translate(2px, -1px);
+    clip-path: inset(62% 0 18% 0);
+  }
+  93% {
+    opacity: 0.85;
+    transform: translate(-1px, 0);
+    clip-path: inset(38% 0 42% 0);
+  }
+}
+@keyframes glitch-b {
+  0%,
+  88%,
+  100% {
+    opacity: 0;
+    transform: none;
+    clip-path: none;
+  }
+  90% {
+    opacity: 0.75;
+    transform: translate(2px, -1px);
+    clip-path: inset(24% 0 46% 0);
+  }
+  92% {
+    opacity: 0.75;
+    transform: translate(-2px, 1px);
+    clip-path: inset(70% 0 8% 0);
+  }
+  94% {
+    opacity: 0.75;
+    transform: translate(1px, 1px);
+    clip-path: inset(6% 0 76% 0);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Focus, selection, scrollbar
+   ───────────────────────────────────────────────────────────── */
 :focus-visible {
-  outline: 2px solid var(--term);
+  outline: 2px solid var(--cyan);
   outline-offset: 2px;
 }
 :focus:not(:focus-visible) {
@@ -43,31 +284,55 @@ body {
 }
 
 ::selection {
-  background: rgba(74, 222, 128, 0.25);
+  background: rgba(34, 211, 238, 0.3);
   color: #ffffff;
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #0a0a0a;
+  background: #05060d;
 }
 ::-webkit-scrollbar-thumb {
-  background: #262626;
+  background: #1b2740;
+  border: 2px solid #05060d;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3a3a3a;
+  background: #2b3c5e;
 }
 
-/* Respect reduced-motion: kill the cursor blink, smooth scroll and transitions. */
+/* ─────────────────────────────────────────────────────────────
+   Reduced motion: the art stays, the movement stops.
+   ───────────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  .cursor {
+  .cursor,
+  .led,
+  .flicker,
+  .scanbar,
+  .pixel-bob,
+  .trace-flow,
+  .glitch::before,
+  .glitch::after {
     animation: none;
+  }
+  .cursor {
     opacity: 1;
+  }
+  .scanbar {
+    display: none;
+  }
+  .glitch::before,
+  .glitch::after {
+    opacity: 0;
+  }
+  /* Freeze travelling dashes as solid traces rather than stubs. */
+  .trace-flow {
+    stroke-dasharray: none !important;
+    opacity: 0.5;
   }
   *,
   *::before,
@@ -77,3 +342,4 @@ body {
     transition-duration: 0.001ms !important;
   }
 }
+
